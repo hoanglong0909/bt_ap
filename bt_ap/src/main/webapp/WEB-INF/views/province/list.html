@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/resource/css/bootstrap.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="/resource/js/province.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/resource/js/validate.js"></script>
+    <script src="/resource/js/jquery.validate-1.19.3.min.js"></script>
+
+</head>
+<style>
+    .error {
+        color: red;
+    }
+
+    h1 {
+        margin: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    #btnCreateCustomer {
+        margin-top: 80px;
+    }
+
+    .modal-header {
+        marker-offset: auto;
+    }
+</style>
+<body>
+
+<!--new table List-->
+<h1>Thông tin thành phố</h1>
+<div class="container">
+    <div class="box-header">
+
+    </div>
+</div>
+<!--new table List-->
+<div class="container">
+    <div class="row">
+        <div class="col12">
+            <button type="button" class="btn btn-outline-primary updateCustomer"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"
+                    onclick="loadAddNew()">
+                <i class="far fa-create"></i>
+                Create
+            </button>
+        </div>
+    </div>
+</div>
+<table id="provinceList" class="table table-hover">
+    <thead>
+    <tr>
+        <td><strong>ID</strong></td>
+        <td><strong>Tên thành phố</strong></td>
+        <td><strong>Tên Quốc gia</strong></td>
+        <td><strong>Diện tích </strong></td>
+        <td><strong>Dân số</strong></td>
+        <td><strong>GDP</strong></td>
+        <td><strong>Thông số</strong></td>
+        <td><strong>Option</strong></td>
+        <td><strong>Option</strong></td>
+        <!--        <td><strong>Option</strong></td>-->
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="p: ${province}">
+        <tr th:id="'row'+${p.id}">
+            <td th:text="${p.id}"></td>
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.country.name}"></td>
+            <td th:text="${p.acreage}"></td>
+            <td th:text="${p.population}"></td>
+            <td th:text="${p.gdp}"></td>
+            <td th:text="${p.description}"></td>
+            <td>
+                <button type="button" class="btn btn-outline-primary"
+                        data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"
+                        th:onclick="'javascript:loadEditData('+${p.id}+')'"
+                >
+                    <i class="far fa-edit"></i>
+                    Edit
+                </button>
+                <input type="hidden" id="id" th:value="${p.id}">
+            </td>
+            <td>
+                <button class="btn btn-outline-danger"
+                        th:onclick="'javascript:deleteProvince('+${p.id}+')'"><i
+                        class="fas fa-trash-alt"></i>Delete
+                </button>
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><span id="exampleModalLabelSpan"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registration">
+                    <div class="md-6">
+                        <label class="form-label">Tên thành phố:</label>
+                        <input type="text" class="form-control" id="cName" name="cName">
+                    </div>
+                    <div class="md-6">
+                        <label>Country</label>
+                        <select class="form-control" name="cCountry" id="cCountry">
+                            <option value="">Choose country</option>
+                            <option th:each="c : ${countries}"
+                                    th:value="${c.getId()}"
+                                    th:text="${c.getName()}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="md-6">
+                        <label class="col-form-label">Diện tích:</label>
+                        <input type="number" class="form-control" id="cAcreage" name="cAcreage">
+                    </div>
+                    <div class="md-6">
+                        <label class="col-form-label">Dân số:</label>
+                        <input type="number" class="form-control" id="cPopulation" name="cPopulation">
+                    </div>
+                    <div class="md-6">
+                        <label class="col-form-label">GDP:</label>
+                        <input type="number" class="form-control" id="cGdp" name="cGdp">
+                    </div>
+                    <div class="md-6">
+                        <label class="col-form-label">THông số :</label>
+                        <input type="text" class="form-control" id="cDescription" name="cDescription">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal">Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <input type="hidden" id="cId" name="cId">
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+></script>
+<script src="/resource/js/validate-form.js"></script>
+
+</body>
+</html>
